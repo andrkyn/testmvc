@@ -7,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<h3>Singletone</h3>
+<h1>Singleton</h1>
 <body>
 
 <?php
+
+
 
 ?>
 
