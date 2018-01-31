@@ -8,7 +8,7 @@ class ProductFactory
     {
         $this->_types =array(
             'keyboard'=>'Keyboard', //имена классов будут совпадать
-            'mouse'   => 'Mouse'
+            'mouse'   => 'Mouse' //имена классов будут совпадать
         );
     }
 
