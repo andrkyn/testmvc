@@ -1,20 +1,13 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<h1>Singleton</h1>
-<body>
-
 <?php
 
+function __autoload($class_name) {
+    require_once $class_name . '.php';
+}
 
 
-?>
 
-</body>
-</html>
+$products = new Products();
+echo '<pre>';
+var_dump($products->getAllProducts());
+echo '</pre>';
+
