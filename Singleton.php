@@ -29,10 +29,11 @@ class Singleton {
        через new Singlton клонирование и т.д */
     private function __construct(){}
     private function __clone()    {}
-    private function __wakeup()   {}
+    //private function __wakeup()   {}
 
 }
 Singleton::getInstance();
 Singleton::getInstance();
 Singleton::getInstance();
+
 //  ] END code
