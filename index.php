@@ -12,9 +12,9 @@
 $products = array(
         array(
             'id'    =>1,
-            'model' =>'LOGITECH KB10',
+            'model' =>'LOGITECH KB10', // продукт 1
             'price' =>'135.67',
-            'type'  =>'keyboard'
+            'type'  =>'keyboard'        // продукт 2
         ),
         array(
             'id'    =>2,
@@ -26,8 +26,8 @@ $products = array(
 
 $productsFactory =new ProductFactory();
 $cart =array();
-foreach ($products as $product) {
-    $cart[] = $productsFactory->make($product);
+foreach ($products as $product) {   // для каждого продукта вызываем метод make
+    $cart[] = $productsFactory->make($product); // передав отдельные массивы в метод make
 }
 echo "<pre>";
 var_dump($cart);
