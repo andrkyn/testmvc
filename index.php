@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
 </head>
-    <h1>Simple Factory</h1>
+    <h1>Singlton</h1>
 <body>
 
 <?php
@@ -12,13 +12,15 @@ class db {
 
     public $db;
 
-    private static $_instance =null;
-    private static function get_instance() {
-        if(self::$_instance instanceof self) {
-            return self::$_instance;
+    private static $_inst =null;
+
+    public static function get_instance() {
+        if(self::$_inst instanceof self) {
+            return self::$_inst;
         }
-        return self::$_instance =new self;
+        return self::$_inst =new self;
     }
+
     private function __construct() {
         echo "<h1>Connect to data base</h1>";
         $this->db =new mysqli('localhost', 'root', 'sql123', 'testDB');
@@ -38,10 +40,12 @@ class db {
         return$row;
     }
 }
-db::
-//echo "<pre>";
-//var_dump($cart);
-//echo "</pre>";
+//db::get_instance();
+//db::get_instance();
+//db::get_instance();
+echo "<pre>";
+var_dump(db::get_instance());
+echo "</pre>";
 
 ?>
 
