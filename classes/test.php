@@ -1,6 +1,6 @@
 <?php
 
-class Keyboard {
+class test {
     public function __construct()
     {
         echo "Это класс - ".__CLASS__;
@@ -11,12 +11,12 @@ class Keyboard {
     }
 }
 
-class get {
+/*class get {
     static public function create ($item) {
-        /* тут можно вызывать сколько угодно методов данного объекта
+         тут можно вызывать сколько угодно методов данного объекта
           для необходимой задачи. И тогда, когда вызываем всеголишь
           один метод $object =  get::create("parametr") то у нас создается объект return new Keyboard();
-         вызываются требуемые методы и данный объект возвращается */
+         вызываются требуемые методы и данный объект возвращается
         return new Keyboard();
     }
 }
@@ -25,4 +25,4 @@ $object = get::create("parametr");
 
 echo "<pre>";
 var_dump($object);
-echo "</pre>";
+echo "</pre>"; */
