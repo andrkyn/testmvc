@@ -51,7 +51,7 @@ class get { //это и есть вспомогательный класс, ко
         }
     }
 }
-$car =get::create('Chevrolet','green');
+$car =get::create('Ford','green');
 var_dump($car);
 
 ?>
