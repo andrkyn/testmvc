@@ -1,25 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<h1>Observer</h1>
+<body>
+
+</body>
+</html>
+
 <?php
-/**
- * Created by PhpStorm.
- * User: andrey
- * Date: 06.02.18
- * Time: 13:30
- */
-    /* необходимо учесть, что интерфейс содержит только публичные методы без реализации
+
+/* необходимо учесть, что интерфейс содержит только публичные методы без реализации
        в этом основная суть интерфейса */
 interface SubjectInterface  // интерфейс субъекта
 {
     public function attachObserver(ObserverInterface $observer); //здесь субъект на вход будет принимат набюлдателя
     public function detachObserver(ObserverInterface $observer); //метод будет удалять наблюдателя
-    public function notify();   // метод будет оповещать о изменении своего состояния
+    public function notify(EventInterface $event);   // метод будет оповещать о изменении своего состояния
 
 }
 
 interface ObserverInterface // интерфейс наблюдателя
 {
-    public function update(SubjectInterface $subject);
+    public function update(EventInterface $event);
 }
 
+interface EventInterface //кто сгенерировал данное событие
+{
+    public function getName(); // имя события
+    public function getSender(); //инициатор событий
+}
 //пример про футб. команду-субъект
 
 class FootballTeam implements SubjectInterface
@@ -53,11 +65,29 @@ class FootballTeam implements SubjectInterface
         return $this->name;
     }
 
-    public function notify()
+    public function notify(EventInterface $event)
     {
         foreach ($this->observers as $observer) {
-            $observer->update($this);
+            $observer->update($event);
         }
+    }
+
+    public function goalAction() //событие на гол
+    {
+        $event =new FootballEvent(FootballEvent::GOAL, $this); // создадим объект события
+        $this->notify($event); // мы описали действие гол
+    }
+
+    public function goalEnemyAction() //событие на гол в наши ворота
+    {
+        $event =new FootballEvent(FootballEvent::GOAL_ENEMY, $this); // создадим объект события
+        $this->notify($event); //
+    }
+
+    public function fightAction() //событие на гол
+    {
+        $event =new FootballEvent(FootballEvent::FIGHT, $this); // создадим объект события
+        $this->notify($event); // мы описали действие драка
     }
 }
 
@@ -76,10 +106,50 @@ class FootballFan implements ObserverInterface
         return $this->name;
     }
 
-    public function update(SubjectInterface $team)
+    public function update(EventInterface $event)
     {
         //echo "<br/>Фанат отреагировал на событие\n";
-        printf("%s отреагировал на событие команды %s<br/>", $this->getName(),$team->getName());
+        switch ($event->getName()) {
+            case FootballEvent::GOAL:
+                printf("Гол!! %s кричит во всю глотку <br/>", $this->getName());
+                break;
+            case FootballEvent::GOAL_ENEMY:
+                printf("Нам забили гол %s кричит судью на мыло!! <br/>", $this->getName());
+                break;
+            case FootballEvent::FIGHT:
+                printf("%s ломает стул и бьет по голове соседа <br/>", $this->getName());
+                break;
+            default:
+                printf("%s и команда %s в замешательстве...<br/>",
+                    $this->getName(),$event->getSender()->getName());
+        }
+
+    }
+}
+//реализация EventInterface
+class FootballEvent implements EventInterface
+{
+    const GOAL ='goal'; //событие ГОЛ
+    const GOAL_ENEMY ='goal_enemy'; //гол в наши ворота,т.е. нам забили
+    const FIGHT = 'fight'; //драка на поле
+
+    private $name; //хранение имени в закрытом свойстве
+    private $sender;
+
+    public function __construct($name, FootballTeam $sender)
+    {
+        $this->name = $name;
+        $this->sender = $sender;
+    }
+
+    public function getName()
+    {
+        return $this->name; //возвратит имя
+    }
+
+    public function getSender()
+    {
+        return $this->sender;
     }
 }
 
@@ -91,8 +161,18 @@ $fan2 =new FootballFan('Hanna'); //создадим экземпляр клас�
 $team1->attachObserver($fan1); //нашей команде добавить наблюдателей,которые пришли на стадион
 $team1->attachObserver($fan2); //нашей команде добавить наблюдателей,которые пришли на стадион
 
-$team1->notify(); // Произошли какие-то изменения в команде,возможно забили гол и т.д...
+ // событие 1
+$team1->goalAction();
+ // добавил событие 2
+$team1->goalEnemyAction();
 
-//этап 1 добавление кода
-$team1->detachObserver($fan1); // удалить фаната №1
-$team1->notify();      //обновить изменения
+//$team1->detachObserver($fan1); // удалить фаната №1
+
+//добавим событие 3 драку
+$team1->fightAction();
+
+// добавим событие 4
+$fan3 =new FootballFan('Jonathan Bad');
+$team1->attachObserver($fan3);
+
+$team1->fightAction();
