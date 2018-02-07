@@ -173,6 +173,6 @@ $team1->fightAction();
 
 // добавим событие 4
 $fan3 =new FootballFan('Jonathan Bad');
-$team1->attachObserver($fan3);
+$team1->attachObserver($fan3); //
 
 $team1->fightAction();
